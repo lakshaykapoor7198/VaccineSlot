@@ -11,20 +11,25 @@ import android.os.PowerManager;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.time.vaccineslot.service.AlarmReceiver;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     EditText pinCodeInput;
     EditText ageInput;
+    Spinner spinner;
     SharedPreferences prefs;
     String pinCodeKey = "com.time.vaccineslot.pincode";
     String ageKey = "com.time.vaccineslot.age";
+    String intervalKey = "com.time.vaccineslot.interval";
+    String[] intervalArray = {"10 min", "1 hour", "2 hour", "6 hour", "12 hour", "1 day"};
+    long[] intervalArrayMinutes = { 10, 60, 120, 360, 720, 1440};
 
     private PendingIntent pendingIntent;
 
@@ -33,9 +38,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Button submitButton = findViewById(R.id.button_submit);
+        spinner = findViewById(R.id.interval_spinner);
+        spinner.setSelection(0);
         pinCodeInput = findViewById(R.id.pinCode);
         ageInput = findViewById(R.id.age);
+
         submitButton.setOnClickListener(MainActivity.this);
+
         prefs = this.getSharedPreferences(
                 "com.time.vaccineslot", Context.MODE_PRIVATE);
         String pinCode = prefs.getString(pinCodeKey, "");
@@ -46,13 +55,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             ageInput.setText(String.valueOf(age));
         }
 
-//        // Disable battery optimization
-//        PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            Log.d("vaccine", String.valueOf(pm.isIgnoringBatteryOptimizations(getPackageName())));
-//            askIgnoreOptimization();
-//            Log.d("vaccine", String.valueOf(pm.isIgnoringBatteryOptimizations(getPackageName())));
-//        }
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, intervalArray);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
     }
 
     @Override
@@ -60,31 +67,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (v.getId() == R.id.button_submit) {
             String pinCode = pinCodeInput.getText().toString();
             int age = Integer.parseInt(ageInput.getText().toString());
+            long interval = (intervalArrayMinutes[spinner.getSelectedItemPosition()]) * 60 * 1000;
             prefs.edit().putString(pinCodeKey, pinCode).apply();
             prefs.edit().putInt(ageKey, age).apply();
-            scheduleAlarm();
+            prefs.edit().putLong(intervalKey, interval).apply();
+            scheduleAlarm(interval);
         }
     }
 
-    private void scheduleAlarm() {
+    private void scheduleAlarm(long interval) {
         Toast.makeText(getApplicationContext(), "Details saved! You will get notified whenever there is a slot", Toast.LENGTH_LONG).show();
         Intent alarmIntent = new Intent(this, AlarmReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
-        startAlarm();
+        startAlarm(interval);
     }
 
-//    private void askIgnoreOptimization() {
-//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-//            Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-//            intent.setData(Uri.parse("package:" + getPackageName()));
-//            startActivityForResult(intent, 1002);
-//        }
-//    }
-
-    private void startAlarm() {
+    private void startAlarm(long interval) {
         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        int interval = 10 * 60 * 1000;
         manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
-        Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
     }
+
 }

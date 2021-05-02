@@ -1,49 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
+              xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:padding="20dp">
-
-    <TextView
+              android:orientation="vertical">
+    <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Pin Code"
-            android:layout_marginTop="100dp"
-            android:layout_gravity="center"
-            android:textStyle="bold"
-            android:gravity="center"/>
+            android:id="@+id/scrollView"
+            tools:ignore="UselessParent">
+        <LinearLayout
+                android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical"
+                      android:padding="20dp">
 
-    <EditText
-            android:id="@+id/pinCode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_gravity="center_vertical"/>
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pin_code"
+                    android:layout_marginTop="100dp"
+                    android:layout_gravity="center"
+                    android:textStyle="bold"
+                    android:gravity="center"/>
 
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Age"
-            android:textStyle="bold"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_marginTop="50dp"/>
+            <EditText
+                    android:id="@+id/pinCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"/>
 
-    <EditText
-            android:id="@+id/age"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_gravity="center_vertical"/>
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/age"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginTop="50dp"/>
 
-    <Button
-            android:id="@+id/button_submit"
-            android:text="@string/submit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"/>
+            <EditText
+                    android:id="@+id/age"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"/>
 
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/update_interval"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginTop="50dp"/>
+
+            <Spinner
+                    android:id="@+id/interval_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp"/>
+
+            <Button
+                    android:id="@+id/button_submit"
+                    android:text="@string/submit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="30dp"
+                    android:textColor="#FFFFFF"
+                    android:background="@color/colorPrimary"/>
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Note: If you don't get regular updates as per interval, Go to Settings > Battery > Battery Optimization > Set 'Don't Optimize'/ Disable for 'Vaccine Slot' app and submit above form again."
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginTop="100dp"/>
+
+
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

@@ -19,10 +19,15 @@ public class RestHelper {
     public static List<AvailableSlot> getAvailableSlot(String pinCode, int age) throws ParseException {
 
         Calendar calendar = Calendar.getInstance();
+        if (calendar.get(Calendar.HOUR_OF_DAY) > 15){
+            calendar.add(Calendar.DATE, 1);
+        }
+
         String date = getDateInFormat(calendar);
         List<AvailableSlot> nearestAvailableSlots = null;
 
-        for (int i = 0; i < 2; i++) {
+        // Check for next 8 weeks
+        for (int i = 0; i < 8; i++) {
             String url = getUrl(pinCode, date);
             SlotResponse response = getSlots(url);
 

@@ -78,21 +78,21 @@ public class AlarmReceiver extends BroadcastReceiver {
         if (availableSlots != null ){
             for (AvailableSlot availableSlot : availableSlots) {
 
-                StringBuilder text = new StringBuilder(availableSlot.getAvailable_capacity() + " doses available on " + availableSlot.getDate());
+                StringBuilder text = new StringBuilder(availableSlot.getAvailable_capacity() + " doses left");
 
                 if (!availableSlot.getVaccine().equals("")) {
                     text.append(" of ").append(availableSlot.getVaccine());
                 }
 
-                if (availableSlot.getSlots().size() > 0) {
-                    text.append("\nSlots: ");
-
-                    for (String slot : availableSlot.getSlots()) {
-                        text.append(slot).append(", ");
-                    }
-
-                    text.setLength(text.length() - 2);
-                }
+//                if (availableSlot.getSlots().size() > 0) {
+//                    text.append("\nSlots: ");
+//
+//                    for (String slot : availableSlot.getSlots()) {
+//                        text.append(slot).append(", ");
+//                    }
+//
+//                    text.setLength(text.length() - 2);
+//                }
 
                 style.addMessage(text.toString(), System.currentTimeMillis(),
                         availableSlot.getName());
@@ -102,12 +102,14 @@ public class AlarmReceiver extends BroadcastReceiver {
             style.addMessage("Will notify whenever available.", System.currentTimeMillis(), "No vaccine :(");
         }
 
+        if (availableSlots != null) {
+            style.setConversationTitle("Available on " + availableSlots.get(0).getDate());
+        }
         mBuilder.setContentIntent(pendingIntent);
         mBuilder.setSmallIcon(R.drawable.icon);
         mBuilder.setChannelId(channelId);
         mBuilder.setCategory(NotificationCompat.CATEGORY_MESSAGE);
         mBuilder.setStyle(style);
-        mBuilder.setAutoCancel(true);
         mNotificationManager.notify(0, mBuilder.build());
     }
 }
