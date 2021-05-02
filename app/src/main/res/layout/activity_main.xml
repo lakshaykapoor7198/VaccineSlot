@@ -2,25 +2,48 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:orientation="vertical">
+              android:orientation="vertical"
+              android:padding="20dp">
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pin Code"
+            android:layout_marginTop="100dp"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:gravity="center"/>
 
     <EditText
             android:id="@+id/pinCode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/pin_code"/>
+            android:gravity="center"
+            android:layout_gravity="center_vertical"/>
 
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Age"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginTop="50dp"/>
 
     <EditText
             android:id="@+id/age"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/age"/>
+            android:gravity="center"
+            android:layout_gravity="center_vertical"/>
 
     <Button
             android:id="@+id/button_submit"
             android:text="@string/submit"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"/>
 
 </LinearLayout>

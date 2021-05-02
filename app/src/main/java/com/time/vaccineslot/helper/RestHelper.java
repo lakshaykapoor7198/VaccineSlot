@@ -12,64 +12,78 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
+import java.util.*;
 
 public class RestHelper {
 
-    public static AvailableSlot getAvailableSlot(String pinCode, int age) throws ParseException {
+    public static List<AvailableSlot> getAvailableSlot(String pinCode, int age) throws ParseException {
 
         Calendar calendar = Calendar.getInstance();
         String date = getDateInFormat(calendar);
-        AvailableSlot bestAvailableSlot = null;
+        List<AvailableSlot> nearestAvailableSlots = null;
 
-        int daysToCheck = 0;
-
-        while (true){
+        for (int i = 0; i < 2; i++) {
             String url = getUrl(pinCode, date);
             SlotResponse response = getSlots(url);
 
             if (response.equals(new SlotResponse())) break;
             if (response.getCenters().size() == 0) break;
 
-            bestAvailableSlot = findAvailableSlot(response, age);
-            if (null != bestAvailableSlot) {
+            nearestAvailableSlots = findAvailableSlot(response, age);
+            if (null != nearestAvailableSlots) {
                 break;
             }
 
-            if (daysToCheck > 28){
-                break;
-            }
-
-            daysToCheck += 7;
             calendar.add(Calendar.DATE, 7);
             date = getDateInFormat(calendar);
         }
 
-        return bestAvailableSlot;
+        return nearestAvailableSlots;
     }
 
-    private static AvailableSlot findAvailableSlot(SlotResponse response, int age) throws ParseException {
+    private static List<AvailableSlot> findAvailableSlot(SlotResponse response, int age) throws ParseException {
 
-        AvailableSlot availableSlot = null;
+        AvailableSlot tempSlot;
+        TreeMap<String, List<AvailableSlot>> availableSlots = new TreeMap<>((o1, o2) -> {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+            try {
+                return sdf.parse(o1).compareTo(sdf.parse(o2));
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return -1;
+            }
+        });
+
 
         for (Centers center : response.getCenters()){
             for (Sessions session: center.getSessions()){
                 if (session.getAvailable_capacity() > 0 &&
-                    session.getMin_age_limit() <= age){
-                    if (null == availableSlot ||
-                             compareDates(session.getDate(), availableSlot.getDate())){
-                        availableSlot = new AvailableSlot(center.getName(),
-                                session.getDate(),
-                                session.getVaccine(),
-                                session.getAvailable_capacity(),
-                                session.getSlots());
-                    }
+                    session.getMin_age_limit() <= age &&
+                    session.getSlots().size() > 0){
+                    tempSlot = new AvailableSlot(center.getName(),
+                            session.getDate(),
+                            session.getVaccine(),
+                            session.getAvailable_capacity(),
+                            session.getSlots());
+                    addToMap(availableSlots, tempSlot, session.getDate());
                 }
             }
         }
 
-        return availableSlot;
+        if (availableSlots.firstEntry() == null) return null;
+        return availableSlots.firstEntry().getValue();
+
+    }
+
+    private static void addToMap(Map<String, List<AvailableSlot>> availableSlotsMap,
+                                 AvailableSlot slot,
+                                 String date){
+        List<AvailableSlot> availableSlotList = new ArrayList<>();
+        if (availableSlotsMap.containsKey(date)){
+            availableSlotList = availableSlotsMap.get(date);
+        }
+        availableSlotList.add(slot);
+        availableSlotsMap.put(date, availableSlotList);
     }
 
     public static boolean compareDates(String d1, String d2) throws ParseException {
