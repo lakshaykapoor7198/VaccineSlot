@@ -16,7 +16,7 @@ import java.util.*;
 
 public class RestHelper {
 
-    public static List<AvailableSlot> getAvailableSlot(String pinCode, int age) throws ParseException {
+    public static TreeMap<String, List<AvailableSlot>> getAvailableSlot(String pinCode, int age) throws ParseException {
 
         Calendar calendar = Calendar.getInstance();
         if (calendar.get(Calendar.HOUR_OF_DAY) > 15){
@@ -24,18 +24,18 @@ public class RestHelper {
         }
 
         String date = getDateInFormat(calendar);
-        List<AvailableSlot> nearestAvailableSlots = null;
+        TreeMap<String, List<AvailableSlot>> allAvailableSlots = null;
 
-        // Check for next 8 weeks
-        for (int i = 0; i < 8; i++) {
+        // Check for next 3 weeks
+        for (int i = 0; i < 3; i++) {
             String url = getUrl(pinCode, date);
             SlotResponse response = getSlots(url);
 
             if (response.equals(new SlotResponse())) break;
             if (response.getCenters().size() == 0) break;
 
-            nearestAvailableSlots = findAvailableSlot(response, age);
-            if (null != nearestAvailableSlots) {
+            allAvailableSlots = findAvailableSlot(response, age);
+            if (null != allAvailableSlots) {
                 break;
             }
 
@@ -43,10 +43,10 @@ public class RestHelper {
             date = getDateInFormat(calendar);
         }
 
-        return nearestAvailableSlots;
+        return allAvailableSlots;
     }
 
-    private static List<AvailableSlot> findAvailableSlot(SlotResponse response, int age) throws ParseException {
+    private static TreeMap<String, List<AvailableSlot>> findAvailableSlot(SlotResponse response, int age) throws ParseException {
 
         AvailableSlot tempSlot;
         TreeMap<String, List<AvailableSlot>> availableSlots = new TreeMap<>((o1, o2) -> {
@@ -76,7 +76,7 @@ public class RestHelper {
         }
 
         if (availableSlots.firstEntry() == null) return null;
-        return availableSlots.firstEntry().getValue();
+        return availableSlots;
 
     }
 

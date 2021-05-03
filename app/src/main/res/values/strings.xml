@@ -4,4 +4,8 @@
     <string name="age">Age</string>
     <string name="pin_code">Pin Code</string>
     <string name="update_interval">Get update after every</string>
+    <string name="center_name">Center Name</string>
+    <string name="date">Date</string>
+    <string name="dose">Dose</string>
+    <string name="book">Book</string>
 </resources>

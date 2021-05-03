@@ -3,11 +3,12 @@ package com.time.vaccineslot.pojo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class AvailableSlot {
+public class AvailableSlot implements Serializable {
     String name;
     String date;
     String vaccine;

@@ -5,16 +5,18 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 import androidx.core.app.NotificationCompat;
+import com.time.vaccineslot.AvailableSlotsActivity;
+import com.time.vaccineslot.MainActivity;
 import com.time.vaccineslot.R;
 import com.time.vaccineslot.helper.RestHelper;
 import com.time.vaccineslot.pojo.AvailableSlot;
 import lombok.SneakyThrows;
 
-import java.util.List;
+import java.text.ParseException;
+import java.util.*;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
@@ -41,7 +43,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             @Override
             public void run() {
                 try {
-                    List<AvailableSlot> availableSlot = RestHelper.getAvailableSlot(pinCode, age);
+                    TreeMap<String, List<AvailableSlot>> availableSlot = RestHelper.getAvailableSlot(pinCode, age);
                     Log.d("vaccine", String.valueOf(availableSlot));
                     showNotification(availableSlot, context);
                 } catch (Exception e) {
@@ -52,7 +54,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     }
 
-    private void showNotification(List<AvailableSlot> availableSlots, Context mContext) {
+    private void showNotification(TreeMap<String, List<AvailableSlot>> allAvailableSlots, Context mContext) throws ParseException {
 
         NotificationManager mNotificationManager = (NotificationManager) mContext.getSystemService(NOTIFICATION_SERVICE);
 
@@ -68,48 +70,21 @@ public class AlarmReceiver extends BroadcastReceiver {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(mContext.getApplicationContext(), "notify_001");
 
-        Intent ii = new Intent(Intent.ACTION_VIEW);
-        ii.setData(Uri.parse("https://selfregistration.cowin.gov.in/"));
-        ii.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, ii, 0);
-
-        NotificationCompat.MessagingStyle style = new NotificationCompat.MessagingStyle("Vaccine");
-
-        if (availableSlots != null ){
-            for (AvailableSlot availableSlot : availableSlots) {
-
-                StringBuilder text = new StringBuilder(availableSlot.getAvailable_capacity() + " doses left");
-
-                if (!availableSlot.getVaccine().equals("")) {
-                    text.append(" of ").append(availableSlot.getVaccine());
-                }
-
-//                if (availableSlot.getSlots().size() > 0) {
-//                    text.append("\nSlots: ");
-//
-//                    for (String slot : availableSlot.getSlots()) {
-//                        text.append(slot).append(", ");
-//                    }
-//
-//                    text.setLength(text.length() - 2);
-//                }
-
-                style.addMessage(text.toString(), System.currentTimeMillis(),
-                        availableSlot.getName());
-            }
-        }
-        else{
-            style.addMessage("Will notify whenever available.", System.currentTimeMillis(), "No vaccine :(");
+        if (allAvailableSlots == null || allAvailableSlots.size() == 0){
+            mBuilder.setContentTitle("No vaccine slot \uD83D\uDE37\uD83D\uDE15");
+            mBuilder.setContentText("Will notify whenever available.");
+        } else{
+            Intent ii = new Intent(mContext, AvailableSlotsActivity.class);
+            ii.putExtra("availableSlotsMap", allAvailableSlots);
+            PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, ii, PendingIntent.FLAG_UPDATE_CURRENT);
+            mBuilder.setContentIntent(pendingIntent);
+            mBuilder.setContentText("Vaccine available on " + allAvailableSlots.size() +  " days. Check slots here \uD83D\uDE37\uD83D\uDE01");
         }
 
-        if (availableSlots != null) {
-            style.setConversationTitle("Available on " + availableSlots.get(0).getDate());
-        }
-        mBuilder.setContentIntent(pendingIntent);
         mBuilder.setSmallIcon(R.drawable.icon);
         mBuilder.setChannelId(channelId);
+        mBuilder.setAutoCancel(true);
         mBuilder.setCategory(NotificationCompat.CATEGORY_MESSAGE);
-        mBuilder.setStyle(style);
         mNotificationManager.notify(0, mBuilder.build());
     }
 }
