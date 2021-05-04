@@ -8,4 +8,5 @@
     <string name="date">Date</string>
     <string name="dose">Dose</string>
     <string name="book">Book</string>
+    <string name="Address"/>
 </resources>

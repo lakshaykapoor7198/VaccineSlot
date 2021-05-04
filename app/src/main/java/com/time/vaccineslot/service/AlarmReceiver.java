@@ -9,7 +9,6 @@ import android.os.Build;
 import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import com.time.vaccineslot.AvailableSlotsActivity;
-import com.time.vaccineslot.MainActivity;
 import com.time.vaccineslot.R;
 import com.time.vaccineslot.helper.RestHelper;
 import com.time.vaccineslot.pojo.AvailableSlot;

@@ -8,6 +8,7 @@ import java.util.List;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Centers {
+    String address;
     String district_name;
     String fee_type;
     String name;

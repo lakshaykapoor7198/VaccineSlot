@@ -29,17 +29,28 @@
                 android:layout_marginLeft="10dp"/>
 
         <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/Address"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/centerName"
+                android:text="@string/Address"
+                android:textColor="@color/white"
+                android:layout_marginStart="10dp"/>
+
+        <TextView
                 android:id="@+id/Dose"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:gravity="center_horizontal"
                 android:text="@string/date"
                 android:textColor="@color/white"
                 android:layout_marginLeft="10dp"
-                android:layout_below="@id/centerName"/>
+                android:layout_below="@id/Address"/>
         
         <TextView
                 android:layout_width="wrap_content"
@@ -60,19 +71,20 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/Book"
                 android:gravity="center"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
                 android:text="@string/book"
                 android:layout_alignParentRight="true"
-                android:layout_below="@id/Date"
+                android:layout_below="@id/Address"
                 android:textColor="@color/colorPrimary"
                 android:background="@drawable/bg_rounder"
                 android:layout_alignParentEnd="true"
                 android:padding="4dp"
                 android:minHeight="0dp"
                 android:textAllCaps="false"
-                android:minWidth="75dp" android:layout_marginEnd="4dp"/>
+                android:minWidth="75dp"
+                android:layout_marginEnd="4dp"/>
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

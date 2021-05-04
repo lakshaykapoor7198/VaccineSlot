@@ -65,7 +65,9 @@ public class RestHelper {
                 if (session.getAvailable_capacity() > 0 &&
                     session.getMin_age_limit() <= age &&
                     session.getSlots().size() > 0){
-                    tempSlot = new AvailableSlot(center.getName(),
+                    tempSlot = new AvailableSlot(
+                            center.getAddress(),
+                            center.getName(),
                             session.getDate(),
                             session.getVaccine(),
                             session.getAvailable_capacity(),

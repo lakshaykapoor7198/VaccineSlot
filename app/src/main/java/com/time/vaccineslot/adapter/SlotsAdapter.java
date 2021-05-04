@@ -46,6 +46,7 @@ public class SlotsAdapter extends RecyclerView.Adapter<SlotsAdapter.ViewHolder> 
         }
         holder.dose.setText(text.toString());
         holder.date.setText(availableSlot.getDate());
+        holder.address.setText(availableSlot.getAddress());
         holder.book.setOnClickListener((View view) -> {
             new AlertDialog.Builder(view.getContext())
                     .setTitle("Redirecting to CoWin site")
@@ -67,6 +68,7 @@ public class SlotsAdapter extends RecyclerView.Adapter<SlotsAdapter.ViewHolder> 
         private final TextView centerName;
         private final TextView dose;
         private final TextView date;
+        private final TextView address;
         private final Button book;
 
         public ViewHolder(@NonNull View itemView) {
@@ -75,6 +77,7 @@ public class SlotsAdapter extends RecyclerView.Adapter<SlotsAdapter.ViewHolder> 
             dose = itemView.findViewById(R.id.Dose);
             date = itemView.findViewById(R.id.Date);
             book = itemView.findViewById(R.id.Book);
+            address = itemView.findViewById(R.id.Address);
         }
     }
 
