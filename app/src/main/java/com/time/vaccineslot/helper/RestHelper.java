@@ -1,5 +1,6 @@
 package com.time.vaccineslot.helper;
 
+import android.widget.Toast;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.time.vaccineslot.pojo.AvailableSlot;
 import com.time.vaccineslot.pojo.Centers;
@@ -16,7 +17,9 @@ import java.util.*;
 
 public class RestHelper {
 
-    public static TreeMap<String, List<AvailableSlot>> getAvailableSlot(String pinCode, int age) throws ParseException {
+    private static final String serverBaseUrl = "https://cdn-api.co-vin.in/api";
+
+    public static TreeMap<String, List<AvailableSlot>> getAvailableSlot(String id, int age, String callType) throws ParseException {
 
         Calendar calendar = Calendar.getInstance();
         if (calendar.get(Calendar.HOUR_OF_DAY) > 15){
@@ -28,7 +31,7 @@ public class RestHelper {
 
         // Check for next 3 weeks
         for (int i = 0; i < 3; i++) {
-            String url = getUrl(pinCode, date);
+            String url = getUrl(id, date, callType);
             SlotResponse response = getSlots(url);
 
             if (response.equals(new SlotResponse())) break;
@@ -62,7 +65,7 @@ public class RestHelper {
 
         for (Centers center : response.getCenters()){
             for (Sessions session: center.getSessions()){
-                if (session.getAvailable_capacity() > 0 &&
+                if (session.getAvailable_capacity() > 1 && //Should be 0, but there is some issue with public api, randomly shows 1 vaccine available, so neglecting that
                     session.getMin_age_limit() <= age &&
                     session.getSlots().size() > 0){
                     tempSlot = new AvailableSlot(
@@ -93,13 +96,14 @@ public class RestHelper {
         availableSlotsMap.put(date, availableSlotList);
     }
 
-    public static boolean compareDates(String d1, String d2) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-        return sdf.parse(d1).before(sdf.parse(d2));
-    }
-
-    public static String getUrl(String pinCode, String date){
-        return "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=" + pinCode + "&date=" + date;
+    public static String getUrl(String id, String date, String callType){
+        String url = serverBaseUrl + "/v2/appointment/sessions/public/";
+        if (callType.equals("District")){
+            return url + "calendarByDistrict?district_id=" + id + "&date=" + date;
+        }
+        else{
+            return url + "calendarByPin?pincode=" + id + "&date=" + date;
+        }
     }
 
     public static String getDateInFormat(Calendar calendar){
@@ -112,6 +116,7 @@ public class RestHelper {
             URL uri = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) uri.openConnection();
             connection.setRequestProperty("accept", "application/json");
+            connection.setRequestProperty("user-agent", "Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus)");
             InputStream responseStream = connection.getInputStream();
             ObjectMapper mapper = new ObjectMapper();
             return  mapper.readValue(responseStream, SlotResponse.class);

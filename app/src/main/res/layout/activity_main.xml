@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:orientation="vertical">
+              android:orientation="vertical"
+              android:background="@color/white">
     <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -14,54 +15,206 @@
                       android:orientation="vertical"
                       android:padding="20dp">
 
-            <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/pin_code"
-                    android:layout_marginTop="100dp"
-                    android:layout_gravity="center"
-                    android:textStyle="bold"
-                    android:gravity="center"/>
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginTop="50dp"
+                          android:orientation="horizontal"
+                          android:weightSum="4">
+                <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/age"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:layout_weight="2"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textColor="@color/black"/>
 
-            <EditText
-                    android:id="@+id/pinCode"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:layout_gravity="center_vertical"/>
+                <RadioGroup
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/age"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="2">
 
-            <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/age"
-                    android:textStyle="bold"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:layout_marginTop="50dp"/>
+                    <RadioButton
+                            android:id="@+id/eighteen"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/_18_44"
+                            android:buttonTint="@color/colorPrimary"
+                            android:textColor="@color/black"
+                            android:layout_marginRight="10dp" android:layout_marginEnd="10dp"/>
 
-            <EditText
-                    android:id="@+id/age"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:layout_gravity="center_vertical"/>
+                    <RadioButton
+                            android:id="@+id/fortyfive"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/_45"
+                            android:buttonTint="@color/colorPrimary"
+                            android:textColor="@color/black"
+                            android:checked="false"/>
+                </RadioGroup>
 
-            <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/update_interval"
-                    android:textStyle="bold"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:layout_marginTop="50dp"/>
+            </LinearLayout>
 
-            <Spinner
-                    android:id="@+id/interval_spinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:layout_marginTop="10dp"/>
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginTop="40dp"
+                          android:orientation="vertical"
+                          android:background="@drawable/border_bg"
+                          android:padding="10dp">
+
+                <LinearLayout android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:orientation="horizontal"
+                              android:weightSum="2">
+
+                    <Spinner
+                            android:id="@+id/state_spinner"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:textColor="@color/black"
+                            android:gravity="center"
+                            android:background="@drawable/spinner_bg"
+                            android:layout_margin="5dp"
+                            android:padding="10dp"/>
+
+                    <Spinner
+                            android:id="@+id/district_spinner"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:layout_gravity="center"
+                            android:background="@drawable/spinner_bg"
+                            android:layout_margin="5dp"
+                            android:padding="10dp"
+                            android:gravity="center"/>
+                </LinearLayout>
+
+    
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/or"
+                        android:layout_marginTop="20dp"
+                        android:layout_gravity="center"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="30sp"/>
+
+                <LinearLayout android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:orientation="horizontal"
+                              android:gravity="center_vertical"
+                              android:layout_gravity="center_vertical"
+                              android:layout_marginTop="10dp"
+                              android:weightSum="4">
+                    <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/pin_code"
+                            android:textStyle="bold"
+                            android:textSize="16sp"
+                            android:layout_weight="2"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:textColor="@color/black"/>
+
+                    <EditText
+                            android:layout_weight="2"
+                            android:id="@+id/pinCode"
+                            android:layout_width="0dp"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:backgroundTint="@color/colorPrimary"/>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginTop="30dp"
+                          android:orientation="horizontal"
+                          android:weightSum="2">
+
+                <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:layout_gravity="center_vertical"
+                        android:layout_height="wrap_content"
+                        android:text="@string/update_interval"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+
+                <Spinner
+                        android:id="@+id/interval_spinner"
+                        android:layout_width="0dp"
+                        android:padding="10dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/spinner_bg"
+                        android:gravity="center"/>
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginTop="20dp"
+                          android:orientation="horizontal"
+                          android:weightSum="2">
+                <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/send_no_vaccine_notifications_also"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:paddingRight="15dp"
+                        android:layout_weight="1"
+                        android:textColor="@color/black"/>
+
+                <RadioGroup
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/noVaccineNotification"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1">
+
+                    <RadioButton
+                            android:id="@+id/noVaccineYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/yes"
+                            android:buttonTint="@color/colorPrimary"
+                            android:textColor="@color/black"
+                            android:layout_marginRight="10dp" android:layout_marginEnd="10dp"/>
+
+                    <RadioButton
+                            android:id="@+id/noVaccineNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/no"
+                            android:buttonTint="@color/colorPrimary"
+                            android:textColor="@color/black"
+                            android:checked="false"/>
+                </RadioGroup>
+
+            </LinearLayout>
+
 
             <Button
                     android:id="@+id/button_submit"
@@ -70,9 +223,9 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="40dp"
                     android:textColor="#FFFFFF"
-                    android:background="@color/colorPrimary"/>
+                    android:background="@drawable/bg_rounder_blue"/>
 
             <TextView
                     android:layout_width="match_parent"

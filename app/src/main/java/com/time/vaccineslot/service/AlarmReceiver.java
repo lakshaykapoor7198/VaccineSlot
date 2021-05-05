@@ -23,6 +23,9 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     String pinCodeKey = "com.time.vaccineslot.pincode";
     String ageKey = "com.time.vaccineslot.age";
+    String districtIdKey = "com.time.vaccineslot.districtid";
+    String slotsApiCallKey = "com.time.vaccineslot.slotsapicall";
+    String noVaccineShowKey = "com.time.vaccineslot.novaccine";
 
     @SneakyThrows
     @Override
@@ -30,11 +33,18 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         SharedPreferences prefs = context.getSharedPreferences(
                 "com.time.vaccineslot", Context.MODE_PRIVATE);
-        String pinCode = prefs.getString(pinCodeKey, "");
+        String apiCallType = prefs.getString(slotsApiCallKey, "");
+        String noVaccine = prefs.getString(noVaccineShowKey, "");
+        String id;
+        if (apiCallType.equals("District")){
+            id = prefs.getString(districtIdKey, "");
+        } else{
+            id = prefs.getString(pinCodeKey, "");
+        }
+
         int age = prefs.getInt(ageKey, 18);
 
-
-        if (pinCode.equals("")){
+        if (id.equals("")){
             return;
         }
 
@@ -42,9 +52,9 @@ public class AlarmReceiver extends BroadcastReceiver {
             @Override
             public void run() {
                 try {
-                    TreeMap<String, List<AvailableSlot>> availableSlot = RestHelper.getAvailableSlot(pinCode, age);
+                    TreeMap<String, List<AvailableSlot>> availableSlot = RestHelper.getAvailableSlot(id, age, apiCallType);
                     Log.d("vaccine", String.valueOf(availableSlot));
-                    showNotification(availableSlot, context);
+                    showNotification(availableSlot, context, noVaccine);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -53,7 +63,9 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     }
 
-    private void showNotification(TreeMap<String, List<AvailableSlot>> allAvailableSlots, Context mContext) throws ParseException {
+    private void showNotification(TreeMap<String, List<AvailableSlot>> allAvailableSlots,
+                                  Context mContext,
+                                  String noVaccine) throws ParseException {
 
         NotificationManager mNotificationManager = (NotificationManager) mContext.getSystemService(NOTIFICATION_SERVICE);
 
@@ -70,6 +82,9 @@ public class AlarmReceiver extends BroadcastReceiver {
                 new NotificationCompat.Builder(mContext.getApplicationContext(), "notify_001");
 
         if (allAvailableSlots == null || allAvailableSlots.size() == 0){
+            if (noVaccine.equals("No")){
+                return;
+            }
             mBuilder.setContentTitle("No vaccine slot \uD83D\uDE37\uD83D\uDE15");
             mBuilder.setContentText("Will notify whenever available.");
         } else{

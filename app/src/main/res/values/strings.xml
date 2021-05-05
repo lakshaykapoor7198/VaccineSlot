@@ -1,12 +1,20 @@
 <resources>
     <string name="app_name">Vaccine Slot</string>
     <string name="submit">Submit</string>
-    <string name="age">Age</string>
-    <string name="pin_code">Pin Code</string>
-    <string name="update_interval">Get update after every</string>
+    <string name="age">Age: </string>
+    <string name="pin_code">Pin Code: </string>
+    <string name="update_interval">Notification Interval: </string>
     <string name="center_name">Center Name</string>
     <string name="date">Date</string>
     <string name="dose">Dose</string>
     <string name="book">Book</string>
     <string name="Address"/>
+    <string name="or">OR</string>
+    <string name="select_state">Select State</string>
+    <string name="select_district">Select District</string>
+    <string name="_18_44">18-44</string>
+    <string name="_45">45+</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="send_no_vaccine_notifications_also">Send Notifications When No Vaccine Available:</string>
 </resources>
