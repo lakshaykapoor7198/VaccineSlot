@@ -4,7 +4,7 @@ Install: https://github.com/lakshaykapoor7198/VaccineSlot/releases/download/v1.0
 
 Add Details:
 <br />
-<img src="https://user-images.githubusercontent.com/22433070/116930240-21a0ae00-ac7d-11eb-8304-c809b5ca5128.jpg" width="500">
+<img src="https://user-images.githubusercontent.com/22433070/117218613-17b7b000-ae21-11eb-83bc-1c29d0616f67.png" width="500">
 
 Get regular updates:
 <br />
