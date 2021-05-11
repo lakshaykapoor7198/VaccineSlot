@@ -97,7 +97,7 @@ public class RestHelper {
     }
 
     public static String getUrl(String id, String date, String callType){
-        String url = serverBaseUrl + "/v2/appointment/sessions/public/";
+        String url = serverBaseUrl + "/v2/appointment/sessions/";
         if (callType.equals("District")){
             return url + "calendarByDistrict?district_id=" + id + "&date=" + date;
         }
@@ -116,7 +116,7 @@ public class RestHelper {
             URL uri = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) uri.openConnection();
             connection.setRequestProperty("accept", "application/json");
-            connection.setRequestProperty("user-agent", "Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus)");
+            connection.setRequestProperty("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36");
             InputStream responseStream = connection.getInputStream();
             ObjectMapper mapper = new ObjectMapper();
             return  mapper.readValue(responseStream, SlotResponse.class);

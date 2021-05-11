@@ -42,8 +42,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String slotsApiCallKey = "com.time.vaccineslot.slotsapicall";
     String noVaccineShowKey = "com.time.vaccineslot.novaccine";
 
-    String[] intervalArray = {"10 min", "1 hour", "2 hour", "6 hour", "12 hour", "1 day"};
-    long[] intervalArrayMinutes = { 10, 60, 120, 360, 720, 1440};
+    String[] intervalArray = {"1 min", "10 min", "1 hour", "2 hour", "6 hour", "12 hour", "1 day"};
+    long[] intervalArrayMinutes = { 1, 10, 60, 120, 360, 720, 1440};
     static List<String> stateNames = new ArrayList<>();
     static List<Integer> stateIds = new ArrayList<>();
     static List<String> districtNames = new ArrayList<>();
