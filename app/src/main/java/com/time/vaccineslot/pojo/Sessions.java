@@ -9,6 +9,8 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Sessions {
     int available_capacity;
+    int available_capacity_dose1;
+    int available_capacity_dose2;
     String date;
     int min_age_limit;
     String vaccine;

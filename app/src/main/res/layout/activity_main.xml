@@ -215,6 +215,52 @@
 
             </LinearLayout>
 
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginTop="20dp"
+                          android:orientation="horizontal"
+                          android:weightSum="4">
+
+                <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dose"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:layout_weight="2"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textColor="@color/black"/>
+
+                <RadioGroup
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/dose"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="2">
+
+                    <RadioButton
+                            android:id="@+id/dose1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/first"
+                            android:buttonTint="@color/colorPrimary"
+                            android:textColor="@color/black"
+                            android:layout_marginRight="10dp" android:layout_marginEnd="10dp"/>
+
+                    <RadioButton
+                            android:id="@+id/dose2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/second"
+                            android:buttonTint="@color/colorPrimary"
+                            android:textColor="@color/black"
+                            android:checked="false"/>
+                </RadioGroup>
+
+            </LinearLayout>
 
             <Button
                     android:id="@+id/button_submit"

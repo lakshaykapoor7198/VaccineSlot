@@ -26,6 +26,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     String districtIdKey = "com.time.vaccineslot.districtid";
     String slotsApiCallKey = "com.time.vaccineslot.slotsapicall";
     String noVaccineShowKey = "com.time.vaccineslot.novaccine";
+    String doseKey = "com.time.vaccineslot.dose";
 
     @SneakyThrows
     @Override
@@ -35,6 +36,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 "com.time.vaccineslot", Context.MODE_PRIVATE);
         String apiCallType = prefs.getString(slotsApiCallKey, "");
         String noVaccine = prefs.getString(noVaccineShowKey, "");
+        String dose = prefs.getString(doseKey, "First");
         String id;
         if (apiCallType.equals("District")){
             id = prefs.getString(districtIdKey, "");
@@ -52,7 +54,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             @Override
             public void run() {
                 try {
-                    TreeMap<String, List<AvailableSlot>> availableSlot = RestHelper.getAvailableSlot(id, age, apiCallType);
+                    TreeMap<String, List<AvailableSlot>> availableSlot = RestHelper.getAvailableSlot(id, age, dose, apiCallType);
                     Log.d("vaccine", String.valueOf(availableSlot));
                     showNotification(availableSlot, context, noVaccine);
                 } catch (Exception e) {

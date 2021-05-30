@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     RadioGroup ageRadioGroup;
     RadioButton noVaccineRadioBtn;
     RadioGroup noVaccineRadioGroup;
+    RadioButton doseRadioBtn;
+    RadioGroup doseRadioGroup;
 
     SharedPreferences prefs;
     String pinCodeKey = "com.time.vaccineslot.pincode";
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String districtIdKey = "com.time.vaccineslot.districtid";
     String slotsApiCallKey = "com.time.vaccineslot.slotsapicall";
     String noVaccineShowKey = "com.time.vaccineslot.novaccine";
+    String doseKey = "com.time.vaccineslot.dose";
 
     String[] intervalArray = {"1 min", "10 min", "1 hour", "2 hour", "6 hour", "12 hour", "1 day"};
     long[] intervalArrayMinutes = { 1, 10, 60, 120, 360, 720, 1440};
@@ -63,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         districtSpinner = findViewById(R.id.district_spinner);
         pinCodeInput = findViewById(R.id.pinCode);
         ageRadioGroup= findViewById(R.id.age);
+        doseRadioGroup= findViewById(R.id.dose);
         noVaccineRadioGroup= findViewById(R.id.noVaccineNotification);
 
         spinnerBackground = spinner.getBackground();
@@ -73,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String pinCode = prefs.getString(pinCodeKey, "");
         int age = prefs.getInt(ageKey, 18);
         String noVaccine = prefs.getString(noVaccineShowKey, "Yes");
+        String dose = prefs.getString(doseKey, "First");
 
         if (!pinCode.equals("")) {
             pinCodeInput.setText(pinCode);
@@ -90,8 +95,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             noVaccineRadioBtn = findViewById(R.id.noVaccineYes);
         }
 
+        if (dose.equals("First")){
+            doseRadioBtn = findViewById(R.id.dose1);
+        }else{
+            doseRadioBtn = findViewById(R.id.dose2);
+        }
+
         ageRadioBtn.setChecked(true);
         noVaccineRadioBtn.setChecked(true);
+        doseRadioBtn.setChecked(true);
 
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, intervalArray);
@@ -120,6 +132,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             int noVaccineSelectedId = noVaccineRadioGroup.getCheckedRadioButtonId();
             noVaccineRadioBtn = findViewById(noVaccineSelectedId);
             String noVaccine = (String) noVaccineRadioBtn.getText();
+            int doseSelectedId = doseRadioGroup.getCheckedRadioButtonId();
+            doseRadioBtn = findViewById(doseSelectedId);
+            String dose = (String) doseRadioBtn.getText();
             long interval = (intervalArrayMinutes[spinner.getSelectedItemPosition()]) * 60 * 1000;
             int stateId = (stateIds.get(stateSpinner.getSelectedItemPosition()));
             String stateName = (stateNames.get(stateSpinner.getSelectedItemPosition()));
@@ -140,6 +155,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             prefs.edit().putString(pinCodeKey, pinCode).apply();
             prefs.edit().putInt(ageKey, age).apply();
+            prefs.edit().putString(doseKey, dose).apply();
             prefs.edit().putString(noVaccineShowKey, noVaccine).apply();
             prefs.edit().putLong(intervalKey, interval).apply();
             prefs.edit().putString(stateNameKey, stateName).apply();

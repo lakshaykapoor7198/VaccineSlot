@@ -19,7 +19,7 @@ public class RestHelper {
 
     private static final String serverBaseUrl = "https://cdn-api.co-vin.in/api";
 
-    public static TreeMap<String, List<AvailableSlot>> getAvailableSlot(String id, int age, String callType) throws ParseException {
+    public static TreeMap<String, List<AvailableSlot>> getAvailableSlot(String id, int age, String dose, String callType) throws ParseException {
 
         Calendar calendar = Calendar.getInstance();
         if (calendar.get(Calendar.HOUR_OF_DAY) > 15){
@@ -37,7 +37,7 @@ public class RestHelper {
             if (response.equals(new SlotResponse())) break;
             if (response.getCenters().size() == 0) break;
 
-            allAvailableSlots = findAvailableSlot(response, age);
+            allAvailableSlots = findAvailableSlot(response, age, dose);
             if (null != allAvailableSlots) {
                 break;
             }
@@ -49,7 +49,7 @@ public class RestHelper {
         return allAvailableSlots;
     }
 
-    private static TreeMap<String, List<AvailableSlot>> findAvailableSlot(SlotResponse response, int age) throws ParseException {
+    private static TreeMap<String, List<AvailableSlot>> findAvailableSlot(SlotResponse response, int age, String dose) throws ParseException {
 
         AvailableSlot tempSlot;
         TreeMap<String, List<AvailableSlot>> availableSlots = new TreeMap<>((o1, o2) -> {
@@ -65,7 +65,8 @@ public class RestHelper {
 
         for (Centers center : response.getCenters()){
             for (Sessions session: center.getSessions()){
-                if (session.getAvailable_capacity() > 1 && //Should be 0, but there is some issue with public api, randomly shows 1 vaccine available, so neglecting that
+                int availableCapacity = dose.equals("First") ? session.getAvailable_capacity_dose1() : session.getAvailable_capacity_dose2();
+                if (availableCapacity > 1 && //Should be 0, but there is some issue with public api, randomly shows 1 vaccine available, so neglecting that
                     session.getMin_age_limit() <= age &&
                     session.getSlots().size() > 0){
                     tempSlot = new AvailableSlot(
@@ -73,7 +74,7 @@ public class RestHelper {
                             center.getName(),
                             session.getDate(),
                             session.getVaccine(),
-                            session.getAvailable_capacity(),
+                            availableCapacity,
                             session.getSlots());
                     addToMap(availableSlots, tempSlot, session.getDate());
                 }
